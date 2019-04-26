@@ -2,6 +2,7 @@
 #include <random>
 #include <assert.h>
 #include <string.h>
+#include <math.h>
 
 using namespace std;
 
@@ -32,7 +33,6 @@ int main(int argc, char *argv[]) {
     printArray(numbers, numberOfElements);
     assert(validate(numbers, numberOfElements) && "The sort is not ordering all the elements");
 
-    system("read");
     return EXIT_SUCCESS;
 }
 
@@ -48,8 +48,32 @@ void printArray(int *array, size_t size) {
     cout << endl;
 }
 
+int parent (int n){
+    return floor((n-1)/2);
+}
+
+void heapify(int* array, int child, int p) {
+    if (p < 0 || p == child)
+        return;
+    if (array[p] > array[child])
+        return;
+    else
+        swap(array[child], array[p]);
+        heapify(array, p, parent(p));
+}
+
+void heap(int* array, size_t size) {
+    for (int i = 0; i < size; ++i) {
+        heapify(array, i, parent(i));
+    }
+}
+
 void heapsort(int* array, size_t size) {
     // TODO
+    for (int i = size; i > 0; --i) {
+        heap(array, i);
+        swap(array[0], array[i - 1]);
+    }
 }
 
 bool validate(int* array, size_t size) {
